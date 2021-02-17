@@ -1,10 +1,8 @@
 const fs = require('fs');
 const http = require('http');
-const { db } = require('../config/db-config');
 const user = require('../models/user')
 
 require('dotenv').config();
-console.log('imhere')
 const server = http.createServer((req, res) => {
   const headers = req.headers;
   const url_method = req.method;
@@ -15,35 +13,30 @@ const server = http.createServer((req, res) => {
   const route = (Object.keys(routes).indexOf(url) != -1) ? routes[url] : routes.notFound;
 
   route(data, (statusCode, message) => {
-    if (url_method === 'POST') {
-      switch (url) {
-        case 'register':
-          req.on('data', (part) => {
-            data += part.toString();
-          });
 
-          req.on('end', () => {
-            // fs.writeFileSync(__dirname + '/product.json', data);
-            console.log(db)
-            db.collection('users').insertOne({
-              name: req.body.name,
-              age: req.body.age,
-              email: req.body.email
-            }).then(() => {
-              res.writeHead(statusCode, { 'content-type': 'application/json' });
-              res.end(JSON.stringify(message));
-            }).catch((err) => {
-              console.log('error in creating user', err)
-            });
-          });
-          break;
-        default:
-          break;
-      }
+    req.on('data', (part) => {
+      console.log('Im here')
+      data += part.toString();
+    });
 
-      req.on('error', e => { errorHandler(e) })
-    }
-  })
+    req.on('end', () => {
+      // fs.writeFileSync(__dirname + '/product.json', data);
+      const { db } = require('../config/db-config');
+      // console.log('data:: ', JSON.stringify(data))
+      // console.log(data.name)
+
+      const body = JSON.parse(data);
+
+      db.collection('users').insertOne(body).then(() => {
+        res.writeHead(statusCode, { 'content-type': 'application/json' });
+        res.end(JSON.stringify(message));
+      }).catch((err) => {
+        console.log('error in creating user', err)
+      });
+    });
+
+    req.on('error', e => { errorHandler(e) })
+  });
 });
 
 function sampleRoute(data, callback) {
@@ -70,7 +63,6 @@ const routes = {
   notFound: notFound,
   register: register
 };
-
 
 const port = process.env.SERVER_PORT;
 
