@@ -1,2 +1,4 @@
-const db = require('./app/config/db-config')
-const server = require('./app/bin/server');
+const { connectDB } = require('./app/config/db-config');
+
+require('./app/config/db-config').connectDB();
+require('./app/bin/server');

@@ -1,4 +1,4 @@
-const user = {
+interface user = {
   name: String,
   age: Number,
   email: String
