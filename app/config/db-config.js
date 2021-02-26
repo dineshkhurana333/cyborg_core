@@ -1,10 +1,16 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, Logger } = require('mongodb');
 
 // Connection URI
 const uri =
-  "mongodb://localhost:27017/?poolSize=10&writeConcern=majority";
+  "mongodb://localhot:27017";
 // Create a new MongoClient
-const client = new MongoClient(uri, { useUnifiedTopology: true });
+const client = new MongoClient(uri, {
+  useUnifiedTopology: true,
+  poolSize: 10,
+  autoReconnect: true,
+  numberOfRetries: 2,
+  connectTimeoutMS: 100,
+});
 
 let db = null
 

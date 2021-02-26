@@ -8,7 +8,7 @@ async function register(body, callback) {
   const user = await db.collection(collections.USER).findOne({
     name: body.name
   }).catch((err) => {
-    console.log('In catch', err)
+    console.log('Error in findOne', err)
     return err
   });
 

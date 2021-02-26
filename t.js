@@ -1,44 +1,19 @@
-// class RS {
-//   constructor(color) {
-//     this.color = color;
-//   }
-
-//   fly() {
-//     console.log(`The ${this.color} ship is flying.`)
-//   }
-
-//   land() {
-//     console.log(`The ${this.color} ship has landed.`)
-//   }
-// }
-
-// const r1 = new RS('blue');
-
-// r1.fly();
-// r1.land()
-
-
-class RocketShip {
-  constructor(color) {
-    this.defColor = color;
-  }
-  get color() {
-    return this.defColor;
-  }
-  fly() {
-    console.log(`The ${this.color} rocket is flying!`);
-  }
-  land() {
-    console.log(`The ${this.color} rocket has landed.`);
-    yield
+const p = {
+  name: "Dinesh",
+  getName: function () {
+    console.log(this.name)
   }
 }
 
-const r1 = new RocketShip('blue');
+const p1 = {
+  name: "lalli",
+  getName: function (arg) {
+    console.log(this.name, this.arg)
+  }
+}
 
-r1.fly()
-r1.land()
-console.log(r1.color)
-r1.color = 'sad';
-console.log(r1.color)
-r1.fly()
+// setTimeout(p.getName, 1000);
+// setTimeout(function () { p.getName() }, 1000)
+const f = p.getName.bind(p1, 'flkf')
+
+setTimeout(f, 1000)
